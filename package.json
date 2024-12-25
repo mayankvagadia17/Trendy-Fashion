@@ -1,0 +1,13 @@
+{
+  "name": "travelhive",
+  "version": "1.0.0",
+  "description": "Travel Hive backend web services",
+  "license": "ISC",
+  "author": "Mayank Soni",
+  "type": "commonjs",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  }
+}
