@@ -7,12 +7,14 @@ const connectDB = require("./db/connect");
 const PORT = process.env.PORT || 5000;
 
 const demoproducts_routes = require("./routes/demoproducts");
+const user_routes = require("./routes/users");
 
 app.get("/", (req, res) => {
   res.send("Hi, I am live");
 });
 
 app.use("/api/products", demoproducts_routes);
+app.use("/user", user_routes);
 
 const start = async () => {
   try {
