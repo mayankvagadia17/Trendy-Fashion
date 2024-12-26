@@ -1,12 +1,19 @@
-const express = require('express');
+const express = require("express");
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.get('/', (req, res) => {
-  res.send('Hello from App Engine!');
+app.get("/",(req,res)=>{
+    res.send("Hi, I am live");
 });
 
-// Listen to the App Engine-specified port, or 8080 otherwise
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}...`);
-});
+const start = async()=>{
+    try{
+        app.listen(PORT,()=>{
+           console.log(`${PORT} Yes I am conneced`);
+        });
+    }catch(error){
+        console.log(error);
+    }
+};
+
+start();
