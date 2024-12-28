@@ -74,22 +74,34 @@ const login = async (req, res) => {
 
     if (email && password) {
       const hash = md5(password);
-      const checkUserExsits = await User.find({ email: email, password: hash });
-      if (checkUserExsits) {
-        const token = jwt.sign({ name: checkUserExsits[0].name }, "TravelHive");
-        const doc = await User.findOne({ email });
-        // doc.updateOn({ token: token });
-        // const result = await doc.save();
-        res.status(200).json({
-          status: 1,
-          message: "Logged in successfully",
-          data: {},
-        });
+      const user = await User.findOne({ email: email });
+      if (user) {
+        const result = hash === user.password;
+        if (result) {
+          const newtoken = jwt.sign({ name: user.name }, "TravelHive");
+          console.log(newtoken);
+          const updatedUser = await User.findOneAndUpdate(
+            { email: email },
+            { token: newtoken }
+          );
+          const loggedInUser = await User.findOne({ email: email });
+          res.status(200).json({
+            status: 1,
+            message: "Logged in successfully",
+            data: loggedInUser,
+          });
+        } else {
+          res.status(200).json({
+            status: 0,
+            message: "Check your email and password again",
+            data: {},
+          });
+        }
       } else {
         res.status(200).json({
           status: 0,
-          message: "Check your email and password again",
-          data: checkUserExsits,
+          message: "User doesn't exsits",
+          data: {},
         });
       }
     } else {
