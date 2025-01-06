@@ -11,9 +11,15 @@ const createProfile = async (req, res) => {
     const queryObject = {};
 
     if (name && email && country && password) {
-      const checkUserExsits = await User.find({ email });
+      const checkUserExsits = await User.findOne({ email });
 
-      if (!checkUserExsits) {
+      if (checkUserExsits) {
+        res.status(200).json({
+          status: 0,
+          message: "user exsits",
+          data: checkUserExsits,
+        });
+      } else {
         const token = jwt.sign({ name: name }, "TravelHive");
 
         const newUser = new User({
@@ -28,12 +34,6 @@ const createProfile = async (req, res) => {
           status: 1,
           message: "user created successfully",
           data: result,
-        });
-      } else {
-        res.status(200).json({
-          status: 0,
-          message: "user exsits",
-          data: checkUserExsits,
         });
       }
     } else {
