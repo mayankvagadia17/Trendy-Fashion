@@ -1,6 +1,7 @@
 const { message } = require("prompt");
 const User = require("../models/users");
 const jwt = require("jsonwebtoken");
+const SendVerificationCode = require("../middleware/Email");
 
 const md5 = require("md5");
 
@@ -17,24 +18,56 @@ const createProfile = async (req, res) => {
         res.status(200).json({
           status: 0,
           message: "user exsits",
-          data: checkUserExsits,
+          data: {},
         });
       } else {
-        const token = jwt.sign({ name: name }, "TravelHive");
+        const checkUsernameExsits = await User.findOne({ name });
 
-        const newUser = new User({
-          name: name,
-          email: email,
-          country: country,
-          password: md5(password),
-          token: token,
-        });
-        const result = await newUser.save();
-        res.status(200).json({
-          status: 1,
-          message: "user created successfully",
-          data: result,
-        });
+        if (checkUsernameExsits) {
+          res.status(200).json({
+            status: 0,
+            message: "username already used",
+            data: {},
+          });
+        } else {
+          // Create 6 digit verification code
+          const verificationCode = Math.floor(
+            100000 + Math.random() * 900000
+          ).toString();
+
+          // Create User with Token and save in DB
+          const token = jwt.sign({ name: name }, "TravelHive");
+
+          const newUser = new User({
+            name: name,
+            email: email,
+            country: country,
+            password: md5(password),
+            token: token,
+            verificationCode: verificationCode,
+          });
+          const result = await newUser.save();
+          const loggedInUser = await User.findOne(
+            {
+              name: newUser.name,
+            },
+            {
+              email: 1,
+              _id: 0,
+              name: 1,
+              country: 1,
+              token: 1,
+              isVerified: 1,
+              verificationCode: 1,
+            }
+          );
+          SendVerificationCode.sendVerificationCode(email, verificationCode);
+          res.status(200).json({
+            status: 1,
+            message: "User Register Successfully",
+            data: loggedInUser,
+          });
+        }
       }
     } else {
       var errormsg = "Please enter ";
@@ -60,9 +93,75 @@ const createProfile = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       status: 0,
-      message: error,
+      message: "internal server error",
+      data: {},
+    });
+  }
+};
+
+const verifyEmail = async (req, res) => {
+  try {
+    const { verificationCode, email } = req.query;
+    if ((verificationCode, email)) {
+      const checkEmailExsits = await User.findOne({ email });
+
+      if (checkEmailExsits) {
+        if (checkEmailExsits.isVerified) {
+          res.status(200).json({
+            status: 1,
+            message: "User Already Verified",
+            data: {},
+          });
+        } else {
+          if (checkEmailExsits.verificationCode === verificationCode) {
+            const newtoken = jwt.sign(
+              { name: checkEmailExsits.name },
+              "TravelHive"
+            );
+            console.log(newtoken);
+            const updatedUser = await User.findOneAndUpdate(
+              { verificationCode: verificationCode },
+              { token: newtoken, isVerified: true }
+            );
+            const loggedInUser = await User.findOne(
+              {
+                name: checkEmailExsits.name,
+              },
+              { email: 1, _id: 0, name: 1, country: 1, token: 1, isVerified: 1 }
+            );
+            res.status(200).json({
+              status: 1,
+              message: "Logged in successfully",
+              data: loggedInUser,
+            });
+          } else {
+            res.status(200).json({
+              status: 1,
+              message: "Check your verification code again",
+              data: {},
+            });
+          }
+        }
+      } else {
+        res.status(200).json({
+          status: 0,
+          message: "Check your verification code again",
+          data: {},
+        });
+      }
+    } else {
+      res.status(200).json({
+        status: 0,
+        message: "Please enter verification code and email both",
+        data: {},
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: 0,
+      message: "internal server error",
       data: {},
     });
   }
@@ -76,24 +175,35 @@ const login = async (req, res) => {
       const hash = md5(password);
       const user = await User.findOne({ email: email });
       if (user) {
-        const result = hash === user.password;
-        if (result) {
-          const newtoken = jwt.sign({ name: user.name }, "TravelHive");
-          console.log(newtoken);
-          const updatedUser = await User.findOneAndUpdate(
-            { email: email },
-            { token: newtoken }
-          );
-          const loggedInUser = await User.findOne({ email: email });
-          res.status(200).json({
-            status: 1,
-            message: "Logged in successfully",
-            data: loggedInUser,
-          });
+        if (user.isVerified) {
+          const result = hash === user.password;
+          if (result) {
+            const newtoken = jwt.sign({ name: user.name }, "TravelHive");
+            console.log(newtoken);
+            const updatedUser = await User.findOneAndUpdate(
+              { email: email },
+              { token: newtoken }
+            );
+            const loggedInUser = await User.findOne(
+              { email: email },
+              { email: 1, _id: 0, name: 1, country: 1, token: 1, isVerified: 1 }
+            );
+            res.status(200).json({
+              status: 1,
+              message: "Logged in successfully",
+              data: loggedInUser,
+            });
+          } else {
+            res.status(200).json({
+              status: 0,
+              message: "Check your email and password again",
+              data: {},
+            });
+          }
         } else {
           res.status(200).json({
             status: 0,
-            message: "Check your email and password again",
+            message: "User is not verified",
             data: {},
           });
         }
@@ -112,12 +222,12 @@ const login = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       status: 0,
-      message: error,
+      message: "internal server error",
       data: {},
     });
   }
 };
 
-module.exports = { createProfile, login };
+module.exports = { createProfile, verifyEmail, login };
