@@ -110,7 +110,7 @@ const verifyEmail = async (req, res) => {
       if (checkEmailExsits) {
         if (checkEmailExsits.isVerified) {
           res.status(200).json({
-            status: 1,
+            status: 0,
             message: "User Already Verified",
             data: {},
           });
@@ -133,12 +133,12 @@ const verifyEmail = async (req, res) => {
             );
             res.status(200).json({
               status: 1,
-              message: "Logged in successfully",
+              message: "Profile verified successfully",
               data: loggedInUser,
             });
           } else {
             res.status(200).json({
-              status: 1,
+              status: 0,
               message: "Check your verification code again",
               data: {},
             });
@@ -155,6 +155,43 @@ const verifyEmail = async (req, res) => {
       res.status(200).json({
         status: 0,
         message: "Please enter verification code and email both",
+        data: {},
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: 0,
+      message: "internal server error",
+      data: {},
+    });
+  }
+};
+
+const resendCode = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    const checkUserExsits = await User.findOne({ email });
+
+    if (checkUserExsits) {
+      const verificationCode = Math.floor(
+        100000 + Math.random() * 900000
+      ).toString();
+
+      const updatedUser = await User.findOneAndUpdate(
+        { email: email },
+        { verificationCode: verificationCode }
+      );
+      SendVerificationCode.sendVerificationCode(email, verificationCode);
+      res.status(200).json({
+        status: 1,
+        message: "Code sent successfully",
+        data: {},
+      });
+    } else {
+      res.status(200).json({
+        status: 0,
+        message: "Check your email address again",
         data: {},
       });
     }
@@ -201,6 +238,15 @@ const login = async (req, res) => {
             });
           }
         } else {
+          const verificationCode = Math.floor(
+            100000 + Math.random() * 900000
+          ).toString();
+
+          const updatedUser = User.findOneAndUpdate(
+            { email: email },
+            { verificationCode: verificationCode }
+          );
+          SendVerificationCode.sendVerificationCode(email, verificationCode);
           res.status(200).json({
             status: 0,
             message: "User is not verified",
@@ -230,4 +276,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { createProfile, verifyEmail, login };
+module.exports = { createProfile, verifyEmail, login, resendCode };
