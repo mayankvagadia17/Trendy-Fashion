@@ -52,6 +52,7 @@ const createProfile = async (req, res) => {
               name: newUser.name,
             },
             {
+              userId: 1,
               email: 1,
               _id: 0,
               name: 1,
@@ -129,7 +130,15 @@ const verifyEmail = async (req, res) => {
               {
                 name: checkEmailExsits.name,
               },
-              { email: 1, _id: 0, name: 1, country: 1, token: 1, isVerified: 1 }
+              {
+                userId: 1,
+                email: 1,
+                _id: 0,
+                name: 1,
+                country: 1,
+                token: 1,
+                isVerified: 1,
+              }
             );
             res.status(200).json({
               status: 1,
@@ -186,7 +195,15 @@ const login = async (req, res) => {
             );
             const loggedInUser = await User.findOne(
               { email: email },
-              { email: 1, _id: 0, name: 1, country: 1, token: 1, isVerified: 1 }
+              {
+                userId: 1,
+                email: 1,
+                _id: 0,
+                name: 1,
+                country: 1,
+                token: 1,
+                isVerified: 1,
+              }
             );
             res.status(200).json({
               status: 1,

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const autoIncrement = require("mongoose-sequence")(mongoose);
 
 const userSchema = mongoose.Schema({
   name: {
@@ -30,5 +31,7 @@ const userSchema = mongoose.Schema({
     required: true,
   },
 });
+
+userSchema.plugin(autoIncrement, { inc_field: "userId" });
 
 module.exports = mongoose.model("Users", userSchema);
