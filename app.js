@@ -7,16 +7,18 @@ const connectDB = require("./db/connect");
 const PORT = process.env.PORT || 5000;
 
 const user_routes = require("./routes/users");
+const product_routes = require("./routes/product");
 
-app.get("/", (req, res) => {
-  res.send("Hi, I am live");
-});
+const product = require("./models/product");
+const product_json = require("./models/product.json");
 
 app.use("/user", user_routes);
+app.use("/api/product", product_routes);
 
 const start = async () => {
   try {
     await connectDB(process.env.MONGODB_URL);
+    // await product.create(product_json);
     app.listen(PORT, () => {
       console.log(`${PORT} Yes I am conneced`);
     });

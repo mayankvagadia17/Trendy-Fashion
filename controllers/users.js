@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { message } = require("prompt");
 const User = require("../models/users");
 const jwt = require("jsonwebtoken");
@@ -36,7 +37,7 @@ const createProfile = async (req, res) => {
           ).toString();
 
           // Create User with Token and save in DB
-          const token = jwt.sign({ name: name }, "TravelHive");
+          const token = jwt.sign({ name: name }, process.env.SECRET_KEY);
 
           const newUser = new User({
             name: name,
@@ -119,7 +120,7 @@ const verifyEmail = async (req, res) => {
           if (checkEmailExsits.verificationCode === verificationCode) {
             const newtoken = jwt.sign(
               { name: checkEmailExsits.name },
-              "TravelHive"
+              process.env.SECRET_KEY
             );
             console.log(newtoken);
             const updatedUser = await User.findOneAndUpdate(
@@ -187,7 +188,10 @@ const login = async (req, res) => {
         if (user.isVerified) {
           const result = hash === user.password;
           if (result) {
-            const newtoken = jwt.sign({ name: user.name }, "TravelHive");
+            const newtoken = jwt.sign(
+              { name: user.name },
+              process.env.SECRET_KEY
+            );
             console.log(newtoken);
             const updatedUser = await User.findOneAndUpdate(
               { email: email },

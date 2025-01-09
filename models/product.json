@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Test",
+    "price": 1,
+    "quantity": 10,
+    "description": "Test",
+    "isPremium": true,
+    "category": "Test",
+    "rating": 4.5,
+    "rating_count": 20,
+    "gender": "male"
+  }
+]
