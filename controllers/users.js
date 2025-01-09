@@ -167,43 +167,6 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-const resendCode = async (req, res) => {
-  try {
-    const { email } = req.query;
-
-    const checkUserExsits = await User.findOne({ email });
-
-    if (checkUserExsits) {
-      const verificationCode = Math.floor(
-        100000 + Math.random() * 900000
-      ).toString();
-
-      const updatedUser = await User.findOneAndUpdate(
-        { email: email },
-        { verificationCode: verificationCode }
-      );
-      SendVerificationCode.sendVerificationCode(email, verificationCode);
-      res.status(200).json({
-        status: 1,
-        message: "Code sent successfully",
-        data: {},
-      });
-    } else {
-      res.status(200).json({
-        status: 0,
-        message: "Check your email address again",
-        data: {},
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      status: 0,
-      message: "internal server error",
-      data: {},
-    });
-  }
-};
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.query;
@@ -276,4 +239,118 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { createProfile, verifyEmail, login, resendCode };
+const resendCode = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    const checkUserExsits = await User.findOne({ email });
+
+    if (checkUserExsits) {
+      const verificationCode = Math.floor(
+        100000 + Math.random() * 900000
+      ).toString();
+
+      const updatedUser = await User.findOneAndUpdate(
+        { email: email },
+        { verificationCode: verificationCode }
+      );
+      SendVerificationCode.sendVerificationCode(email, verificationCode);
+      res.status(200).json({
+        status: 1,
+        message: "Code sent successfully",
+        data: {},
+      });
+    } else {
+      res.status(200).json({
+        status: 0,
+        message: "Check your email address again",
+        data: {},
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: 0,
+      message: "internal server error",
+      data: {},
+    });
+  }
+};
+
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    const checkUserExsits = await User.findOne({ email });
+
+    if (checkUserExsits) {
+      const verificationCode = Math.floor(
+        100000 + Math.random() * 900000
+      ).toString();
+
+      const updatedUser = await User.findOneAndUpdate(
+        { email: email },
+        { verificationCode: verificationCode }
+      );
+      SendVerificationCode.sendVerificationCode(email, verificationCode);
+      res.status(200).json({
+        status: 1,
+        message: "We have sent you a code on your email for verification",
+        data: {},
+      });
+    } else {
+      res.status(200).json({
+        status: 0,
+        message: "Check your email address again",
+        data: {},
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: 0,
+      message: "internal server error",
+      data: {},
+    });
+  }
+};
+
+const updatePassword = async (req, res) => {
+  try {
+    const { email, new_password } = req.query;
+
+    const checkUserExsits = await User.findOne({ email });
+
+    if (checkUserExsits) {
+      const updatedUser = await User.findOneAndUpdate(
+        { email: email },
+        { password: md5(new_password) }
+      );
+
+      res.status(200).json({
+        status: 1,
+        message: "Password changed successfully",
+        data: {},
+      });
+    } else {
+      res.status(200).json({
+        status: 0,
+        message: "Check your email address again",
+        data: {},
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: 0,
+      message: "internal server error",
+      data: {},
+    });
+  }
+};
+
+module.exports = {
+  createProfile,
+  verifyEmail,
+  login,
+  resendCode,
+  forgotPassword,
+  updatePassword,
+};
