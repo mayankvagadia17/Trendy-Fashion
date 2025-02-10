@@ -1,13 +1,21 @@
 [
   {
-    "name": "Test",
-    "price": 1,
-    "quantity": 10,
-    "description": "Test",
-    "isPremium": true,
-    "category": "Test",
-    "rating": 4.5,
-    "rating_count": 20,
-    "gender": "male"
+    "name": "Cotton T-shirt",
+    "description": "High-quality cotton t-shirt available in multiple colors.",
+    "category": "T-Shirts",
+    "price": 19.99,
+    "discount": 10,
+    "finalPrice": 17.99,
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "colors": ["Red", "Blue", "Black"],
+    "stock": {
+      "S": 10,
+      "M": 20,
+      "L": 15,
+      "XL": 5,
+      "XXL": 10
+    },
+    "images": ["image_url_1", "image_url_2"],
+    "sellerId": "unique_user_id"
   }
 ]

@@ -1,0 +1,20 @@
+{
+    "name": "Jane Doe",
+    "email": "janedoe@example.com",
+    "password": "hashed_password_here",
+    "phone": "1234567890",
+    "role": "customer",
+    "addresses": [
+        {
+            "label": "Home",
+            "line1": "123 Main St",
+            "line2": "Apt 4B",
+            "city": "New York",
+            "state": "NY",
+            "zip": "10001",
+            "country": "USA"
+        }
+    ],
+    "createdAt": "2025-01-10T00:00:00Z",
+    "updatedAt": "2025-01-10T00:00:00Z"
+}
