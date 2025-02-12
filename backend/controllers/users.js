@@ -403,7 +403,7 @@ const editProfile = async (req, res) => {
 
     const loggedInuser = await User.findOne({ token: token });
 
-    const { name, phone, role } = req.query;
+    const { name, phone, role, address } = req.query;
 
     if (name) {
       const checkUsernameExsits = await User.findOne({ name: name });
@@ -432,6 +432,9 @@ const editProfile = async (req, res) => {
         { userId: loggedInuser.userId },
         { role: role }
       );
+    }
+    if(address){
+      
     }
     const updatedProfile = await User.findOne(
       {
@@ -462,4 +465,3 @@ module.exports = {
   updatePassword,
   editProfile,
 };
-  
