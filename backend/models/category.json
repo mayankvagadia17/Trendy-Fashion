@@ -1,14 +1,7 @@
 [
   {
     "categoryName": "T-Shirt",
-    "isPremuim": false
-  },
-  {
-    "categoryName": "Shirt",
-    "isPremuim": false
-  },
-  {
-    "categoryName": "Blouse",
-    "isPremuim": false
+    "isPremuim": false,
+    "categoryIcon":"https://firebasestorage.googleapis.com/v0/b/final-year-project-b3a54.appspot.com/o/category_icon%2Ft-shrt.svg?alt=media&token=c0df13ee-5a9a-439b-a3b9-f1c7ee132a43"
   }
 ]
