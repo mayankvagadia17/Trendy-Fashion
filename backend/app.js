@@ -22,8 +22,8 @@ app.use("/api/category", category_routes);
 const start = async () => {
   try {
     await connectDB(process.env.MONGODB_URL);
-    await category.deleteMany({});
-    await category.create(category_json);
+    // await category.deleteMany({});
+    // await category.create(category_json);
     app.listen(PORT, () => {
       console.log(`${PORT} Yes I am conneced`);
     });

@@ -122,11 +122,10 @@ const addProduct = async (req, res) => {
         return;
       }
 
-      const { name, price, quantity, description, category, gender } =
-        req.query;
+      const { name, price, description, category, gender, images } = req.query;
 
-      console.log(name, price, quantity, description, category, gender);
-      if (name && price && quantity && description && category && gender) {
+      console.log(name, price, description, category, gender);
+      if (name && price && description && category && gender && images) {
         const checkProductAdded = await Products.findOne({ name });
 
         if (checkProductAdded) {
@@ -138,13 +137,15 @@ const addProduct = async (req, res) => {
           return;
         }
 
+        const imageList = images.split(",");
+
         const newProduct = new Products({
           name: name,
           price: price,
-          quantity: quantity,
           description: description,
           category: category,
           gender: gender,
+          images: imageList,
         });
 
         const result = await newProduct.save({});

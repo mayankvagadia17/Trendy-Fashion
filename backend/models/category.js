@@ -4,7 +4,7 @@ const autoIncrement = require("mongoose-sequence")(mongoose);
 const categorySchema = mongoose.Schema(
   {
     categoryName: { type: String, required: true },
-    isPremuim: { type: Boolean, default: false },
+    isPremium: { type: Boolean, default: false },
     categoryIcon: { type: String, required: true },
   },
   { versionkey: false }
