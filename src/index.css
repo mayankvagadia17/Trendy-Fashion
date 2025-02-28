@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-bg-sidebar {
+  background-color: #704f38;
+}
+
+.custom-bg-lightbrown {
+  background-color: #ece3db;
+}
+
+.bg-white-new {
+  background-color: #ffffff;
+}
