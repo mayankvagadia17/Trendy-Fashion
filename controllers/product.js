@@ -1,7 +1,6 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const Products = require("../models/product");
-const { message } = require("prompt");
 
 const getAllProduct = async (req, res) => {
   try {
@@ -193,22 +192,6 @@ const addProduct = async (req, res) => {
         rating_count,
         discount,
       } = req.query;
-
-      console.log(
-        name,
-        price,
-        description,
-        category,
-        gender,
-        s,
-        m,
-        l,
-        xl,
-        xxl,
-        rating,
-        rating_count,
-        discount
-      );
       if (name && price && description && category && gender && images) {
         const checkProductAdded = await Products.findOne({ name });
 
@@ -221,7 +204,15 @@ const addProduct = async (req, res) => {
           return;
         }
 
-        const imageList = images.split(",");
+        const decodedString = decodeURIComponent(images);
+
+        // Ensure proper format
+        const encodedURL = decodedString.replace(
+          "admin-uploads/",
+          "admin-uploads%2F"
+        );
+
+        const imageList = JSON.parse(encodedURL);
 
         let final_rating_count = 0;
         let final_rating = 0;
@@ -284,4 +275,66 @@ const addProduct = async (req, res) => {
   }
 };
 
-module.exports = { getAllProduct, getFilterProduct, addProduct };
+const deleteProduct = async (req, res) => {
+  try {
+    const authHeader = req.headers["authorization"];
+
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (token == null) {
+      res.status(401).json({
+        status: 0,
+        message: "Unauthorized",
+        data: {},
+      });
+      return;
+    }
+
+    jwt.verify(token, process.env.SECRET_KEY, async (err, user) => {
+      if (err) {
+        res.status(401).json({
+          status: 0,
+          message: "Invalid Authentication Token",
+          data: {},
+        });
+        return;
+      }
+
+      const { productId } = req.query;
+      if (productId) {
+        const checkProductAdded = await Products.findOne({ productId });
+
+        if (!checkProductAdded) {
+          res.status(200).json({
+            status: 0,
+            message: "Please check product Id again ",
+            data: {},
+          });
+          return;
+        }
+
+        await Products.deleteOne({ productId });
+
+        res.status(200).json({
+          status: 1,
+          message: "Product Deleted.",
+          data: {},
+        });
+      } else {
+        res.status(200).json({
+          status: 0,
+          message: "Please Enter productId",
+          data: {},
+        });
+      }
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 0,
+      message: "internal server error",
+      data: {},
+    });
+  }
+};
+
+module.exports = { getAllProduct, getFilterProduct, addProduct, deleteProduct };
