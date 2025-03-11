@@ -2,41 +2,46 @@
   {
     "categoryName": "All",
     "isPremium": false,
-    "categoryIcon":"https://firebasestorage.googleapis.com/v0/b/final-year-project-b3a54.appspot.com/o/category_icon%2Ft-shrt.svg?alt=media&token=c0df13ee-5a9a-439b-a3b9-f1c7ee132a43"
+    "categoryIcon":"https://res.cloudinary.com/djggag9gb/image/upload/v1741689968/all_oln4pm.svg"
   },
   {
     "categoryName": "T-Shirt",
     "isPremium": false,
-    "categoryIcon":"https://firebasestorage.googleapis.com/v0/b/final-year-project-b3a54.appspot.com/o/category_icon%2Ft-shrt.svg?alt=media&token=c0df13ee-5a9a-439b-a3b9-f1c7ee132a43"
+    "categoryIcon":"https://res.cloudinary.com/djggag9gb/image/upload/v1741691448/tshirt_ade52d.svg"
+  },
+  {
+    "categoryName": "Shirt",
+    "isPremium": false,
+    "categoryIcon":"https://res.cloudinary.com/djggag9gb/image/upload/v1741691911/vectorstock_8099328_t9rbq0.svg"
   },
   {
     "categoryName": "Pant",
     "isPremuim": false,
-    "categoryIcon":"https://firebasestorage.googleapis.com/v0/b/final-year-project-b3a54.appspot.com/o/category_icon%2Fpant.svg?alt=media&token=04c25953-29c7-4c26-9c10-47be990a7b74"
+    "categoryIcon":"https://res.cloudinary.com/djggag9gb/image/upload/v1741691363/pants_j9kdfc.svg"
   },
   {
     "categoryName": "Dress",
     "isPremuim": false,
-    "categoryIcon":"https://firebasestorage.googleapis.com/v0/b/final-year-project-b3a54.appspot.com/o/category_icon%2Fdress.svg?alt=media&token=e6516a62-d2b7-49d3-a99e-c97ff297bf6d"
+    "categoryIcon":"https://res.cloudinary.com/djggag9gb/image/upload/v1741690633/dress_nvrdk4.svg"
   },
   {
     "categoryName":"Jacket",
     "isPremuim":false,
-    "categoryIcon":"https://firebasestorage.googleapis.com/v0/b/final-year-project-b3a54.appspot.com/o/category_icon%2Fjacket.svg?alt=media&token=446191c8-9c51-4dda-8c1c-101cd157ce78"
+    "categoryIcon":"https://res.cloudinary.com/djggag9gb/image/upload/v1741691705/jacket_c0viby.svg"
   },
   {
     "categoryName":"Jumpsuits",
     "isPremuim":false,
-    "categoryIcon":"https://firebasestorage.googleapis.com/v0/b/final-year-project-b3a54.appspot.com/o/category_icon%2Fjumpsuit.svg?alt=media&token=29b206cb-1d22-4dac-b742-ebe01e003930"
+    "categoryIcon":"https://res.cloudinary.com/djggag9gb/image/upload/v1741692170/jumpsuit_zfrqux.svg"
   },
   {
     "categoryName": "Blouse",
     "isPremuim": false,
-    "categoryIcon":"https://firebasestorage.googleapis.com/v0/b/final-year-project-b3a54.appspot.com/o/category_icon%2Fblouse.svg?alt=media&token=17f0f8ec-6ecc-4a78-9433-04f50c9756d3"
+    "categoryIcon":"https://res.cloudinary.com/djggag9gb/image/upload/v1741690385/blouse_pihbsl.svg"
   },
   {
     "categoryName": "Crop Tops",
     "isPremuim": false,
-    "categoryIcon":"https://firebasestorage.googleapis.com/v0/b/final-year-project-b3a54.appspot.com/o/category_icon%2Fcrop_top.svg?alt=media&token=3c34d9ee-1eee-42bb-b452-71faf34ac020"
+    "categoryIcon":"https://res.cloudinary.com/djggag9gb/image/upload/v1741690453/croptop_s5ekeu.svg"
   }
 ]
