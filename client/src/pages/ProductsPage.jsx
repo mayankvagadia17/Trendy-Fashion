@@ -8,6 +8,7 @@ import StatCard from "../components/common/StatCard";
 import { Check, Package, X } from "lucide-react";
 import ProductsTable from "../components/products/ProductsTable";
 import axios from "axios";
+import { BASE_URL } from "../config";
 
 const ProductsPage = () => {
   const [res, setData] = useState(null);
@@ -115,7 +116,7 @@ const ProductsPage = () => {
       const encodedImages = encodeURIComponent(imageString);
       const token = `Bearer ${localStorage.getItem("token")}`;
       const res = await fetch(
-        `http://localhost:5000/api/product/addProduct?name=${ProductName}&description=${ProductDescription}&category=${selected_category}&price=${ProductPrice}&final_price=${ProductFinalPrice}&gender=${selected_gender}&s=${ProductSizesS}&m=${ProductSizesM}&l=${ProductSizesL}&xl=${ProductSizesXL}&xxl=${ProductSizesXXL}&discount=${ProductDiscount}&images=${encodedImages}`,
+        `${BASE_URL}/api/product/addProduct?name=${ProductName}&description=${ProductDescription}&category=${selected_category}&price=${ProductPrice}&final_price=${ProductFinalPrice}&gender=${selected_gender}&s=${ProductSizesS}&m=${ProductSizesM}&l=${ProductSizesL}&xl=${ProductSizesXL}&xxl=${ProductSizesXXL}&discount=${ProductDiscount}&images=${encodedImages}`,
         {
           method: "POST",
           headers: {
@@ -150,7 +151,7 @@ const ProductsPage = () => {
     try {
       const token = `Bearer ${localStorage.getItem("token")}`;
       const res = await fetch(
-        `http://localhost:5000/api/product/deleteProduct?productId=${productId}`,
+        `${BASE_URL}/api/product/deleteProduct?productId=${productId}`,
         {
           method: "POST",
           headers: {
@@ -186,20 +187,17 @@ const ProductsPage = () => {
     try {
       const token = `Bearer ${localStorage.getItem("token")}`;
       console.log(token);
-      fetch(
-        `http://localhost:5000/api/product/getAllProduct?category=All&filter=All`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: token,
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      fetch(`${BASE_URL}/api/product/getAllProduct?category=All&filter=All`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+      })
         .then((response) => response.json())
         .then((result) => {
           console.log("data" + result);
-          setData([...result?.data]);
+          setData([...result.data]);
           setLoading(false);
         })
         .catch((error) => {
@@ -216,7 +214,7 @@ const ProductsPage = () => {
 
     const token = `Bearer ${localStorage.getItem("token")}`;
 
-    fetch(`http://localhost:5000/api/category/getAllCategory`, {
+    fetch(`${BASE_URL}/api/category/getAllCategory`, {
       method: "GET",
       headers: {
         Authorization: token,

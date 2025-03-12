@@ -4,10 +4,7 @@ import { useState, useEffect } from "react";
 
 import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
-import SalesOverviewChart from "../components/overview/SalesOverviewChart";
-import CategoryDistributionChart from "../components/overview/CategoryDistributionChart";
-import SalesChannelChart from "../components/overview/SalesChannelChart";
-import Sidebar from "../components/common/Sidebar";
+import { BASE_URL } from "../config";
 
 const OverviewPage = () => {
   const [produc_res, setData] = useState(null);
@@ -16,16 +13,13 @@ const OverviewPage = () => {
   useEffect(() => {
     const token = `Bearer ${localStorage.getItem("token")}`;
     console.log(token);
-    fetch(
-      `http://localhost:5000/api/product/getAllProduct?category=All&filter=All`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: token,
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    fetch(`${BASE_URL}/api/product/getAllProduct?category=All&filter=All`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => response.json())
       .then((result) => {
         console.log(result[`data`]);

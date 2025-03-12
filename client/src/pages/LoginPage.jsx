@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { BASE_URL } from "../config";
+
 const LoginPage = () => {
   const navigation = useNavigate();
   const [email, setEmail] = useState("");
@@ -13,7 +15,7 @@ const LoginPage = () => {
       console.log(queryParams);
 
       const res = await fetch(
-        `http://localhost:5000/user/login?email=${email}&password=${password}`,
+        `${BASE_URL}/user/login?email=${email}&password=${password}`,
         {
           method: "POST",
           headers: {

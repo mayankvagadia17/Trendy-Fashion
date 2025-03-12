@@ -1,4 +1,4 @@
-import { UserCheck, UserPlus, UsersIcon, UserX } from "lucide-react";
+import { UserCheck, UserPlus, UsersIcon } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { useState, useEffect } from "react";
@@ -6,13 +6,7 @@ import { useState, useEffect } from "react";
 import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
 import UsersTable from "../components/users/UsersTable";
-import UserGrowthChart from "../components/users/UserGrowthChart";
-import UserActivityHeatmap from "../components/users/UserActivityHeatmap";
-import UserDemographicsChart from "../components/users/UserDemographicsChart";
-
-const userStats = {
-  churnRate: "2.4%",
-};
+import { BASE_URL } from "../config";
 
 const UsersPage = () => {
   const [res, setData] = useState(null);
@@ -21,7 +15,7 @@ const UsersPage = () => {
   useEffect(() => {
     const token = `Bearer ${localStorage.getItem("token")}`;
     console.log(token);
-    fetch(`http://localhost:5000/user/getAllUsers`, {
+    fetch(`${BASE_URL}/user/getAllUsers`, {
       method: "GET",
       headers: {
         Authorization: token,
@@ -84,7 +78,7 @@ const UsersPage = () => {
               /> */}
             </motion.div>
 
-            <UsersTable users={res['data']} />
+            <UsersTable users={res["data"]} />
 
             {/* USER CHARTS */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
