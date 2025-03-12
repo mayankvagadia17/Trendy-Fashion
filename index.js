@@ -26,13 +26,13 @@ app.use("/api/product", product_routes);
 app.use("/api/category", category_routes);
 app.use("/api/wishlist", wishlist_routes);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/dist"));
+// if (process.env.NODE_ENV === "production") {
+app.use(express.static("client/dist"));
 
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"))
-  );
-}
+app.get("*", (req, res) =>
+  res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"))
+);
+// }
 
 const start = async () => {
   try {

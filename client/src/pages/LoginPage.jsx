@@ -2,13 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { BASE_URL } from "../config";
+import { useAuth } from "../components/context/AuthContext";
 
 const LoginPage = () => {
+  const { login } = useAuth();
   const navigation = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function login(e) {
+  async function handlelogin(e) {
     e.preventDefault();
     try {
       const queryParams = `email=${email}&password=${password}`;
@@ -26,13 +28,13 @@ const LoginPage = () => {
       const data = await res.json();
       if (data.status === 1) {
         console.log(data);
-        console.log(data["data"]["token"]);
-        localStorage.setItem("token", data["data"]["token"]);
+        login(data["data"]["token"]);
         localStorage.setItem("name", data["data"]["name"]);
         localStorage.setItem("email", data["data"]["email"]);
         navigation("/Home");
       } else {
         console.log(data);
+        alert("Login failed");
       }
     } catch (err) {
       console.log(err);
@@ -54,7 +56,7 @@ const LoginPage = () => {
             }}
             placeholder="Email"
             name=""
-            id=""
+            id="login"
           />
           <input
             className="font-semibold text-black p-2 rounded w-full"
@@ -64,13 +66,13 @@ const LoginPage = () => {
             }}
             placeholder="Password"
             name=""
-            id=""
+            id="password"
           />
           <br />
           <button
             className="custom-bg-lightbrown hover:bg-[#d1b49b] text-black font-semibold py-2 px-10 rounded"
             type="submit"
-            onClick={login}
+            onClick={handlelogin}
           >
             Login
           </button>
