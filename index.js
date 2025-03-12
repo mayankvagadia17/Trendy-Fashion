@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const path = require('path');
+const path = require("path");
 
 const connectDB = require("./db/connect");
 
@@ -27,7 +27,7 @@ app.use("/api/category", category_routes);
 app.use("/api/wishlist", wishlist_routes);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
+  app.use(express.static("client/dist"));
 
   app.get("*", (req, res) =>
     res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"))
