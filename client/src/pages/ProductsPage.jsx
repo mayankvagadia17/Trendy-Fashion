@@ -11,10 +11,10 @@ import axios from "axios";
 import { BASE_URL } from "../config";
 
 const ProductsPage = () => {
-  const [res, setData] = useState(null);
+  const [res, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [category, setCategory] = useState(null);
+  const [category, setCategory] = useState([]);
   const [loading_category, setLoadingCategory] = useState(true);
 
   const Gender = ["Man", "Woman", "Both"];
@@ -206,12 +206,11 @@ const ProductsPage = () => {
         });
     } catch (error) {
       console.error("Error fetching products:", error);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
-
     const token = `Bearer ${localStorage.getItem("token")}`;
 
     fetch(`${BASE_URL}/api/category/getAllCategory`, {
@@ -231,6 +230,8 @@ const ProductsPage = () => {
         console.error("Error fetching data:", error);
         setLoadingCategory(false);
       });
+
+    fetchProducts();
   }, []);
 
   return (

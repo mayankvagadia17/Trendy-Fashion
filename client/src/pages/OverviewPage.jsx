@@ -7,8 +7,9 @@ import StatCard from "../components/common/StatCard";
 import { BASE_URL } from "../config";
 
 const OverviewPage = () => {
-  const [produc_res, setData] = useState(null);
-  const [product_loading, setLoading] = useState(true);
+  const [produc_res, setData] = useState([]);
+  const [user_res, setUserData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = `Bearer ${localStorage.getItem("token")}`;
@@ -24,6 +25,22 @@ const OverviewPage = () => {
       .then((result) => {
         console.log(result[`data`]);
         setData(result);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
+    fetch(`${BASE_URL}/user/getAllUsers`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result[`data`]);
+        setUserData(result);
         setLoading(false);
       })
       .catch((error) => {
@@ -34,7 +51,7 @@ const OverviewPage = () => {
 
   return (
     <div className="p-4">
-      {product_loading ? (
+      {loading ? (
         <div className="flex items-center justify-center h-screen">
           <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500"></div>
         </div>
@@ -57,9 +74,9 @@ const OverviewPage = () => {
                 color="#6366F1"
               />
               <StatCard
-                name="New Users"
+                name="Total Users"
                 icon={Users}
-                value="1,234"
+                value={user_res[`data`].length}
                 color="#8B5CF6"
               />
               <StatCard
@@ -75,14 +92,6 @@ const OverviewPage = () => {
                 color="#10B981"
               />
             </motion.div>
-
-            {/* CHARTS */}
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* <SalesOverviewChart /> */}
-              {/* <CategoryDistributionChart /> */}
-              {/* <SalesChannelChart /> */}
-            </div>
           </main>
         </div>
       )}
