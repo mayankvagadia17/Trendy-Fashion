@@ -9,6 +9,7 @@ import SalesPage from "./pages/SalesPage";
 import OrdersPage from "./pages/OrdersPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import SettingsPage from "./pages/SettingsPage";
+import CategoryPage from "./pages/CategoryPage";
 import { AuthProvider } from "./components/context/AuthContext";
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
               <Route index element={<OverviewPage />} />
               <Route path="overview" element={<OverviewPage />} />
               <Route path="products" element={<ProductsPage />} />
+              <Route path="category" element={<CategoryPage />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="sales" element={<SalesPage />} />
               <Route path="orders" element={<OrdersPage />} />

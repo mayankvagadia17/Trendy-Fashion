@@ -2,8 +2,7 @@ import { motion } from "framer-motion";
 import { Edit, Search, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
-
-const ProductsTable = ({ products, onDelete }) => {
+const ProductsTable = ({ products, onDelete, onEdit }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
 
@@ -64,7 +63,7 @@ const ProductsTable = ({ products, onDelete }) => {
           </thead>
 
           <tbody className="divide-y divide-[#ece3db]">
-            {filteredProducts?.map((product, index) => (
+            {filteredProducts?.map((product) => (
               <motion.tr
                 key={product?.productId}
                 initial={{ opacity: 0 }}
@@ -91,7 +90,10 @@ const ProductsTable = ({ products, onDelete }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                   <button className="text-indigo-200 hover:text-indigo-300 mr-2">
-                    <Edit size={18} />
+                    <Edit
+                      size={18}
+                      onClick={() => onEdit(product?.productId)}
+                    />
                   </button>
                   <button className="text-red-500 hover:text-red-300">
                     <Trash2

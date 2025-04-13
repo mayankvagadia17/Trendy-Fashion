@@ -29,7 +29,7 @@ const SIDEBAR_ITEMS = [
     name: "Category",
     icon: Grid2X2,
     color: "#ece3db",
-    href: "/Home/products",
+    href: "/Home/category",
   },
   { name: "Users", icon: Users, color: "#ece3db", href: "/Home/users" },
   { name: "Sales", icon: DollarSign, color: "#ece3db", href: "/Home/sales" },

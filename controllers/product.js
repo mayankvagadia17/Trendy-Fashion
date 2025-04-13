@@ -337,4 +337,54 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const editProduct = async (req, res) => {
+  try {
+    const authHeader = req.headers["authorization"];
+
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (token == null) {
+      res.status(401).json({
+        status: 0,
+        message: "Unauthorized",
+        data: {},
+      });
+      return;
+    }
+
+    jwt.verify(token, process.env.SECRET_KEY, async (err, user) => {
+      if (err) {
+        res.status(401).json({
+          status: 0,
+          message: "Invalid Authentication Token",
+          data: {},
+        });
+        return;
+      }
+
+      const {
+        productId,
+        name,
+        price,
+        description,
+        category,
+        gender,
+        images,
+        s,
+        m,
+        l,
+        xl,
+        xxl,
+        discount,
+      } = req.query;
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 0,
+      message: "internal server error",
+      data: {},
+    });
+  }
+};
+
 module.exports = { getAllProduct, getFilterProduct, addProduct, deleteProduct };
